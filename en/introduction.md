@@ -4,7 +4,7 @@ Contributing to Nu will require at least some basic programmer experience, and i
 
 This handbook is split into three parts:
 
-I. The Design of Nu
-II. The Implementation of Nu
-III. Best practices of coding for Nu
+1. The Design of Nu
+1. The Implementation of Nu
+1. Best practices of coding for Nu
 
