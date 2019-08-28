@@ -22,4 +22,3 @@ With this information, a pipeline can be checked for potential problems before i
 
 ## Communicating between internal and external commands
 
-
