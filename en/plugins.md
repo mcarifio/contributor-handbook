@@ -18,3 +18,123 @@ Nu continues in this way until it has traveled across all directories in the pat
 
 After it has traversed the path, it will look in two more directories: the target/debug and the target/release directories. It will pick one or the other depending whether Nu was compiled in debug mode or release mode, respectively.  This allows for easier testing of plugins during development.
 
+## Creating a plugin (in Rust)
+
+In this section, we'll walk through creating a Nu plugin using Rust.
+
+Let's create our project. For this example, we'll create a simple `len` command which will return the length of strings it's passed.
+
+First off, we'll create our plugin:
+
+```
+> cargo new nu_plugin_dec
+> cd new_plugin_dec
+```
+
+Next, we'll add `nu` to the list of dependencies to the Cargo.toml directory.  At the bottom of the new Cargo.toml file, add this new dependency on the `nu` crate:
+
+```
+[dependencies]
+nu = "0.2.0"
+```
+
+With this, we can open up src/main.rs and create our plugin.
+
+```rust
+use nu::{
+    serve_plugin, CallInfo, Plugin, Primitive, ReturnSuccess, ReturnValue, ShellError, Signature,
+    Tagged, Value,
+};
+
+struct Len;
+
+impl Len {
+    fn new() -> Len {
+        Len
+    }
+
+    fn len(&mut self, value: Tagged<Value>) -> Result<Tagged<Value>, ShellError> {
+        match value.item {
+            Value::Primitive(Primitive::String(s)) => Ok(Tagged {
+                item: Value::int(s.len() as i64),
+                tag: value.tag,
+            }),
+            _ => Err(ShellError::labeled_error(
+                "Unrecognized type in stream",
+                "'len' given non-string by this",
+                value.tag.span,
+            )),
+        }
+    }
+}
+
+impl Plugin for Len {
+    fn config(&mut self) -> Result<Signature, ShellError> {
+        Ok(Signature::build("len").filter())
+    }
+
+    fn begin_filter(&mut self, _: CallInfo) -> Result<Vec<ReturnValue>, ShellError> {
+        Ok(vec![])
+    }
+
+    fn filter(&mut self, input: Tagged<Value>) -> Result<Vec<ReturnValue>, ShellError> {
+        Ok(vec![ReturnSuccess::value(self.len(input)?)])
+    }
+}
+
+fn main() {
+    serve_plugin(&mut Len::new());
+}
+```
+
+There are a few moving parts here, so let's break them down one by one.
+
+First off, let's look at main:
+
+```rust
+fn main() {
+    serve_plugin(&mut Len::new());
+}
+```
+
+In main, we just call a single function `serve_plugin`. This will do the work of calling into out plugin, handling the JSON serialization/deserialization, and sending values and errors back to Nu for us.  To start it up, we pass it something that implements the `Plugin` trait.
+
+Next, above main, is this implementation of the `Plugin` trait for our particular plugin.  Here, we'll implement the Plugin trait for our type, Len, which we'll see more of soon.  Let's take a look at how we implement this trait:
+
+```rust
+impl Plugin for Len {
+    fn config(&mut self) -> Result<Signature, ShellError> {
+        Ok(Signature::build("len").filter())
+    }
+
+    fn begin_filter(&mut self, _: CallInfo) -> Result<Vec<ReturnValue>, ShellError> {
+        Ok(vec![])
+    }
+
+    fn filter(&mut self, input: Tagged<Value>) -> Result<Vec<ReturnValue>, ShellError> {
+        Ok(vec![ReturnSuccess::value(self.len(input)?)])
+    }
+}
+```
+
+The two most important parts of this implementation are the `config` part, which is run by Nu when it first starts up. This tells Nu the basic information about the plugin: its name, the parameters it takes, and what kind of plugin it is. Here, we tell Nu that the name is "len" and we are a filter plugin (rather than a sink plugin).
+
+Next, in the `filter` implementation, we describe how to do work as values flow into this plugin.  Here, we receive one value (a Tagged<Value>) at a time. We also return either a Vec of values or an error.  Return a vec instead of a single value allows us to remove values, or add new ones, in addition to working with the single value coming in.
+  
+Because the `begin_filter` doesn't do anything, we can remove it.  This would make the above:
+
+```rust
+impl Plugin for Len {
+    fn config(&mut self) -> Result<Signature, ShellError> {
+        Ok(Signature::build("len").filter())
+    }
+
+    fn begin_filter(&mut self, _: CallInfo) -> Result<Vec<ReturnValue>, ShellError> {
+        Ok(vec![])
+    }
+
+    fn filter(&mut self, input: Tagged<Value>) -> Result<Vec<ReturnValue>, ShellError> {
+        Ok(vec![ReturnSuccess::value(self.len(input)?)])
+    }
+}
+```
