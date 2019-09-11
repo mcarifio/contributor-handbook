@@ -1,1 +1,7 @@
 * [English](en/README.md) 
+  * [Introduction](en/introduction.md)
+  * [Commands](en/commands.md)
+  * [Streams](en/streams.md)
+  * [Metadata](en/metadata.md)
+  * [Plugins](en/plugins.md)
+  * [Shells](en/shells.md)
