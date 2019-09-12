@@ -39,4 +39,26 @@ Let's look at these in reverse order to see how Primitives build towards our ful
 
 A Primitive data type is a fundamental type in Nu. While these have similarities to the fundamental datatypes of programming languages, there are a few differences because of the shell capabilities of Nu.
 
-Nu comes with two 'big' number types: BigInt for integers and BigDecimal for decimal numbers.
+Nu comes with two 'big' number types: BigInt for integers and BigDecimal for decimal numbers. This allows Nu in the future to do mathematical operations and maintain precision for longer.
+
+Other data types that are perhaps a bit different from the norm:
+
+* Bytes(u64) = filesize in number of bytes
+* Pattern(string) = a glob pattern (like the `nu*` in `ls nu*`)
+* Path(PathBuf) = a filepath
+* BeginningOfStream = a marker to denote the beginning of a stream
+* EndOfStream = a marker to denote the end of a stream
+
+## Value
+
+In addition to the primitive types, Nu supports aggregate data types. Collectively, these aggregate types are called Values.
+
+Currently, Nu supports 4 Value types: Row, Table, Binary, and Block.
+
+### Tables and Rows
+
+Nu uses a set of terms that match a bit more closely to spreadsheets. Rather than having lists of objects, Nu has a table, which contains rows. Each Row contains contains the column names and their corresponding Values.
+
+### Blocks
+
+Blocks represent code that is ready to be executed by the evaluator. One example of this is the condition in `where {$it > 10}`. 
