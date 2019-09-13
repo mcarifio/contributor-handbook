@@ -6,7 +6,6 @@ A Value is the basic datatype in Nu. Currently, it covers the following possible
 pub enum Value {
     Primitive(Primitive),
     Row(crate::data::Dictionary),
-    Binary(Vec<u8>),
     Table(Vec<Tagged<Value>>),
 
     Block(Block),
@@ -21,6 +20,7 @@ pub enum Primitive {
     Int(BigInt),
     Decimal(BigDecimal),
     Bytes(u64),
+    Binary(Vec<u8>),
     String(String),
     Pattern(String),
     Boolean(bool),
@@ -44,6 +44,7 @@ Nu comes with two 'big' number types: BigInt for integers and BigDecimal for dec
 Other data types that are perhaps a bit different from the norm:
 
 * Bytes(u64) = filesize in number of bytes
+* Binary(Vec<u8>) = an array of bytes
 * Pattern(string) = a glob pattern (like the `nu*` in `ls nu*`)
 * Path(PathBuf) = a filepath
 * BeginningOfStream = a marker to denote the beginning of a stream
@@ -53,7 +54,7 @@ Other data types that are perhaps a bit different from the norm:
 
 In addition to the primitive types, Nu supports aggregate data types. Collectively, these aggregate types are called Values.
 
-Currently, Nu supports 4 Value types: Row, Table, Binary, and Block.
+Currently, Nu supports 4 Value types: Row, Table, Block, and Primitive.
 
 ### Tables and Rows
 
