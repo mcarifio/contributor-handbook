@@ -12,7 +12,7 @@ Commands use a light typechecking pass to ensure that arguments passed to them c
 
 * The name of the command
 * The positional arguments (eg, in `start x y` the `x` and `y` are positional arguments)
-* If the command takes an unbounded number of additional positional arguments (eg, `start a1 a2 a3 ... a99 a100)
+* If the command takes an unbounded number of additional positional arguments (eg, `start a1 a2 a3 ... a99 a100`)
 * The named arguments (eg, `start --now`)
 * If the command is a filter or a sink
 
