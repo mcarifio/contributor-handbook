@@ -1,9 +1,11 @@
-# The Nu contributor handbook
-The work-in-progress book for the Nu contributor handbook
+# Nushell Contributor Handbook
 
-Currently available are:
+The goals of this handbook are to help developers understand how Nu is designed and developed, to make it easier to jump in and contribute.
 
-* [Introduction](introduction.md) - Getting Started
+The current draft includes:
+
+* [Introduction](introduction.md)
+* [Values](values.md)
 * [Commands](commands.md)
 * [Streams](streams.md)
 * [Metadata](metadata.md)
