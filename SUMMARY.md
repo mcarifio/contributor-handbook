@@ -1,5 +1,6 @@
 * [English](en/README.md) 
   * [Introduction](en/introduction.md)
+  * [Values](en/values.md)
   * [Commands](en/commands.md)
   * [Streams](en/streams.md)
   * [Metadata](en/metadata.md)
