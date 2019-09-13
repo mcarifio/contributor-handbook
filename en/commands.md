@@ -1,6 +1,6 @@
 # Commands
 
-Commands are the building blocks for pipelines in Nu. They do the action of the pipeline, whether creating data, changing data as it flows from inputs to outputs, or viewing data once it as exited the pipeline. There are two types of commands: internal commands, those commands built to run inside of Nu, and external commands, commands that are outside of Nu and communicate with standard Unix-style stdin/stdout.
+Commands are the building blocks for pipelines in Nu. They do the action of the pipeline, whether creating data, changing data as it flows from inputs to outputs, or viewing data once it as exited the pipeline. There are two types of commands: internal commands, those commands built to run inside of Nu, and external commands, commands that are outside of Nu and communicate with standard Unix-style `stdin`/`stdout`.
 
 ## Internal commands
 
@@ -12,7 +12,7 @@ Commands use a light typechecking pass to ensure that arguments passed to them c
 
 * The name of the command
 * The positional arguments (eg, in `start x y` the `x` and `y` are positional arguments)
-* If the command takes an unbounded number of additional positional arguments (eg, `start a1 a2 a3 ... a99 a100)
+* If the command takes an unbounded number of additional positional arguments (eg, `start a1 a2 a3 ... a99 a100`)
 * The named arguments (eg, `start --now`)
 * If the command is a filter or a sink
 
@@ -32,12 +32,12 @@ Internal commands communicate with each other using the complete value stream th
 
 Internal commands that send text to external commands need to have prepared text strings ahead of time. If an object is sent directly to an external command, that is considered an error as there is no way to infer what way the structured data should be represented for the external command.  The user is expected to either narrow down to a simple data cell or to use one of the file type converters (like `to-json`) to convert the table into a string representation.
 
-The external command is opened so that its stdin is redirected, so that the data can be sent to it.
+The external command is opened so that its `stdin` is redirected, so that the data can be sent to it.
 
 ### External to internal
 
-External commands send a series of strings via their stdout. These strings are read into the pipeline and are made available to the internal command that is next in the pipeline, or displayed to the user if the external command is the last step of the pipeline.
+External commands send a series of strings via their `stdout`. These strings are read into the pipeline and are made available to the internal command that is next in the pipeline, or displayed to the user if the external command is the last step of the pipeline.
 
 ### External to external
 
-External commands communicate with each other via stdin/stdout. As Nu will detect this situation, it will redirect the stdout of the first command to the stdin of the following external command. In this way, the expected behavior of a shell pipeline between external commands is maintained.
+External commands communicate with each other via `stdin`/`stdout`. As Nu will detect this situation, it will redirect the `stdout` of the first command to the `stdin` of the following external command. In this way, the expected behavior of a shell pipeline between external commands is maintained.

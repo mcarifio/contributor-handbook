@@ -1,4 +1,4 @@
-Nushell Contributor Handbook (in English)
+# Nushell Contributor Handbook
 
 The goals of this handbook are to help developers understand how Nu is designed and developed, to make it easier to jump in and contribute.
 
